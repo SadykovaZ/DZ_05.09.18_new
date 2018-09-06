@@ -2,6 +2,97 @@
 #include<iomanip>
 #include<time.h>
 using namespace std;
+
+void rand_in(int *p[], const int s)
+{
+	int *k = p[0];
+	int *n = p[1];
+	for (int i = 0; i < s; i++)
+	{
+		*(k + i) = rand() % 20;
+		*(n + i) = (rand() % 200);
+	}
+	p[0] = k;
+	p[1] = n;
+}
+void out(int *p[], const int s)
+{
+	cout << "ID  Телефон"<<endl;
+	for (int i = 0; i < s; i++)
+	{
+		cout << setw(3) << p[0][i];
+		cout << setw(8) << p[1][i] << endl;
+	}
+}
+
+int find1(int *p[], const int s)
+{
+	int *k = p[0];
+	int *n = p[1];
+	int key, number;
+	cout << "Введите ID : ";
+	cin >> key;
+	cout << "Введите номер телефона : ";
+	cin >> number;
+	cout << endl;
+	for (int i = 0; i < s; i++)
+		if (*(k + i) == key)
+			if (*(n + i) == number)
+				return i;
+	return -1;
+}
+void change(int *p[], const int s)
+{
+	int *k = p[0];
+	int *n = p[1];
+	int key, number;
+	int new_key, new_number;
+	cout << "Введите ID : ";
+	cin >> key;
+	cout << "Введите номер телефона : ";
+	cin >> number;
+	cout << endl;
+	cout << "Введите замену для ID: ";
+	cin >> new_key;
+	cout << "Введите замену для телефона: ";
+	cin >> new_number;
+	for (int i = 0; i < s; i++)
+	{
+		if (*(k + i) == key)
+		{
+			*(k+i) = new_key;
+		}
+		if (*(n + i) == number)
+		{
+			*(n+i)=new_number;
+		}
+	}
+}
+void add(int *p[], int& s)
+{
+	int *k = p[0];
+	int *n = p[1];
+	int *k_add = new int[++s];
+	int *n_add = new int[s];
+
+	for (int i = 0; i < s-1; i++)
+		*(k_add + i) = *(k + i);
+	for (int i = 0; i < s - 1; i++)
+		*(n_add + i) = *(n + i);
+
+	int key, number;
+	cout << "Введите код города : ";
+	cin >> key;
+	cout << "Введите номер телефона : ";
+	cin >> number;
+	cout << endl;
+	*(k_add + s - 1) = key;
+	*(n_add + s - 1) = number;
+
+	p[0] = k_add;
+	p[1] = n_add;
+}
+
 int main()
 {
 	setlocale(LC_ALL, "Rus");
@@ -158,51 +249,56 @@ start:
 	else if (n == 3)
 	{
 		cout << "3.	Создайте динамический массив, хранящий в первой строке идетификационный номер, а во второй - телефон. Организуйте поиск по ID и по номеру телефона и возможность ввода и изменения данных." << endl;
-		int **p;
-		int n = 4, m = 2;
-		p = new int*[n];
-		for (int i = 0; i < n; i++)
+		
+		int nSize = 5;
+		int *pKey, *pNumber;
+		srand(time(NULL));
+
+		pKey = new int[nSize];
+		pNumber = new int[nSize];
+		int *masP[] = { pKey, pNumber };
+
+		rand_in(masP, nSize);
+		out(masP, nSize);
+
+		bool f = true;
+		while (f)
 		{
-			p[i] = new int[m];
-		}
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < m; j++)
+			int c;
+
+			cout << "Выберите действие :\n1 - поиск по номеру и по ID, \n2 - добавить номер"
+				<< "\n3 - Изменить данные \n4 - выход\n";
+			cin >> c;
+			switch (c)
 			{
-				p[i][j] = 1 + rand() % 20;
+			case 1:
+			{
+				int n = find1(masP, nSize);
+				if (n > -1)
+					cout << "Введенный номер в списке на " << n + 1 << " месте\n";
+				else cout << "Такого номера в списке нет\n";
+			}
+			break;
+			case 2:
+			{
+				add(masP, nSize);
+				out(masP, nSize);
+			}
+			break;
+			case 3:
+			{
+				change(masP, nSize);
+				out(masP, nSize);
+			}
+			break;
+			case 4:
+			{
+				f = false;
+			}
+			break;
+			
 			}
 		}
-		cout << endl;
-		cout << "  ID   Телефон\n";
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < m; j++)
-			{
-				cout << setw(5) << p[i][j];
-			}
-			cout << endl;
-		}
-
-		int key, number;
-		cout << "Введите ID : ";
-		cin >> key;
-		cout << "Введите номер телефона : ";
-		cin >> number;
-		cout << "\n";
-		for (int i = 0; i < n; i++)
-		{
-			if (*p[i] == key)
-				for (int j = 0; j < m; j++)
-				{
-					if (*p[j] == number)
-					{
-						cout << '+' << endl;
-					}
-				}
-		}
-
-
-
 	}
 
 	goto start;
