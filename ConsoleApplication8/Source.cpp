@@ -3,7 +3,7 @@
 #include<time.h>
 using namespace std;
 
-void rand_in(int *p[], const int s)
+void rand_in(int **p, const int s)
 {
 	int *k = p[0];
 	int *n = p[1];
@@ -15,7 +15,7 @@ void rand_in(int *p[], const int s)
 	p[0] = k;
 	p[1] = n;
 }
-void out(int *p[], const int s)
+void out(int **p, const int s)
 {
 	cout << "ID  Телефон"<<endl;
 	for (int i = 0; i < s; i++)
@@ -25,7 +25,7 @@ void out(int *p[], const int s)
 	}
 }
 
-int find1(int *p[], const int s)
+int find1(int **p, const int s)
 {
 	int *k = p[0];
 	int *n = p[1];
@@ -41,7 +41,7 @@ int find1(int *p[], const int s)
 				return i;
 	return -1;
 }
-void change(int *p[], const int s)
+void change(int **p, const int s)
 {
 	int *k = p[0];
 	int *n = p[1];
@@ -68,7 +68,7 @@ void change(int *p[], const int s)
 		}
 	}
 }
-void add(int *p[], int& s)
+void add(int **p, int& s)
 {
 	int *k = p[0];
 	int *n = p[1];
@@ -258,6 +258,7 @@ start:
 		pNumber = new int[nSize];
 		int *masP[] = { pKey, pNumber };
 
+		
 		rand_in(masP, nSize);
 		out(masP, nSize);
 
